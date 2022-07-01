@@ -1,4 +1,6 @@
 #tasks {
+    display: flex;
+    flex-direction: column;
     padding: 20px 15px 5px;
 }
 
@@ -64,4 +66,15 @@
     border-radius: var(--global-radius);
     border: 1px solid var(--global-primary-color);
     color: var(--global-primary-color);
+}
+
+
+@media (min-width: 1300px) {
+    #tasks {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    #tasks .wrapper_list {
+        width: 50%
+    }
 }
