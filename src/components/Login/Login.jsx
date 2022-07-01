@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
-
+import './Login.styles.css'
 
 const Login = () => {
   
@@ -38,7 +38,7 @@ const Login = () => {
 
   return (
     <>
-     <div className="container">
+     <div className="auth">
       <form
        action=""
        onSubmit={handleSubmit}
@@ -52,7 +52,7 @@ const Login = () => {
           type="email" 
           name="email"/>
         </div>
-        {errors.email && <div>{errors.email}</div>}
+        {errors.email && <span>{errors.email}</span>}
         <div>
           <label htmlFor="">Contraseña</label>
           <input 
@@ -61,7 +61,7 @@ const Login = () => {
           type="password" 
           name="password"/>
         </div>
-        {errors.password && <div>{errors.password}</div>}
+        {errors.password && <span>{errors.password}</span>}
         <button
         type="submit"
         >Enviar</button>

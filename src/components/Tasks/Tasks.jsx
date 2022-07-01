@@ -1,8 +1,19 @@
 import React from 'react'
+import Header from '../Header/Header'
+
+import './Tasks.styles.css'
 
 const Tasks = () => {
   return (
-    <div className='container'>Tasks</div>
+    <>
+    <Header />
+    <main id="tasks">
+        <section className='wrapper_list'>
+            
+
+        </section>
+    </main>
+    </>
   )
 }
 
