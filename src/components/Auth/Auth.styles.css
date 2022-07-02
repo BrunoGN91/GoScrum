@@ -4,6 +4,7 @@
   .auth {
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
   }
@@ -35,6 +36,20 @@
     border: var(--global-border)
   }
 
+.auth > form > div > input.errors,
+.auth > form > div> select.errors {
+    border: 1px red solid;
+}
+
+.auth > form > div > select, input {
+  border: 0.5px solid #e9e9e9;
+  background-color: rgb(255, 255, 255);
+  border-radius: 8px;
+  color: #000;
+  flex: 1 1;
+  padding: 5px
+}
+
   .auth button {
     transition: all 0.3s ease-out;
     background-color: var(--global-primary-color);
@@ -53,6 +68,15 @@
     color: var(--global-primary-color);
     padding: 10px !important;
     font-size: 16px;
+  }
+
+  .register_login a {
+    text-decoration: none;
+    outline: none;
+    color: black
+  }
+  .register_login a:hover {
+    color: var(--global-primary-color)
   }
   
   @media (min-width: 600px) {
