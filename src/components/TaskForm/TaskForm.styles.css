@@ -9,6 +9,15 @@
     margin: 0
 }
 
+.task_form input.errors,
+.task_form select.errors {
+    border: 1px red solid;
+}
+
+.task_form span {
+    color: red
+}
+
 .task_form > form {
     width: 100%;
     padding-right: 15px;
@@ -22,6 +31,12 @@
     flex-direction: column;
     justify-content: space-between;
     margin-bottom: 6.6rem;
+}
+
+.task_form > form > div > div {
+    display: flex;
+    flex-direction: column;
+    margin: 5px
 }
 
 .task_form > form > div > div {
