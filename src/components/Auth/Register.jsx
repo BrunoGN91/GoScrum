@@ -3,10 +3,25 @@ import { useFormik } from 'formik'
 import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
 import './Auth.styles.css'
+import { v4 as uuidv4 } from 'uuid';
+import { Switch, FormControlLabel } from '@mui/material'
+import {useNavigate} from 'react-router-dom'
+import axios from 'axios'
 
+
+
+const axiosConfig = {
+  headers: {
+      'Content-Type' : 'application/json',
+      "Accept": "Token",
+      "Access-Control-Allow-Origin": "*",
+
+  }
+};
 
 const Register = () => {
   const [data, setData] = useState()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const URL_ENDPOINT = ""
@@ -24,7 +39,8 @@ const Register = () => {
     role: '',
     teamID: '',
     continent: '',
-    region: ''
+    region: '',
+    switch: false
   }
 
   const requiredField = "* El campo es olbigatorio"
@@ -35,10 +51,16 @@ const Register = () => {
       password: Yup.string().min(4, "minimo 4 caracteres").required(requiredField),
       email: Yup.string().email("Debe ser un email válido").required(requiredField),
       role: Yup.string().required(requiredField),
-      teamID: Yup.string().required(requiredField),
       continent: Yup.string().required(requiredField),
       region: Yup.string().required(requiredField)
     })
+
+    const handleChangeContinent = (value) => {
+      setFieldValue('continent', value)
+      if(value !== "America") {
+        setFieldValue('region', "Otro")
+      }
+    }
     
 
   const validate = (values) => {
@@ -56,14 +78,31 @@ const Register = () => {
 
 
     const onSubmit = (e) => {
-      e.preventDefault()
-       alert("Hola")
-        
+       const teamId = !values.teamID ? uuidv4() : values.teamID
+       fetch('//localhost:8888/auth/register', {
+        method: "POST",
+        headers: axiosConfig,
+        body: JSON.stringify({
+          user: {
+            userName: values.userName,
+            password: values.password,
+            email: values.email,
+            teamID: teamId,
+            role: values.role,
+            continent: values.continent,
+            region: values.region
+          }
+        })
+      }).then(res => {
+        res.json()
+        // navigate('/registered' + teamId)
+      })
+      
     }
 
     const formik = useFormik({initialValues, onSubmit, validationSchema});
 
-    const { handleSubmit, handleChange, values, errors, touched} = formik
+    const { setFieldValue, handleSubmit, handleChange, values, errors, touched} = formik
 
   return (
     <>
@@ -106,6 +145,32 @@ const Register = () => {
           />
         </div>
         {errors.email && touched.email && <span>{errors.email}</span>}
+        <FormControlLabel
+          control={
+            <Switch
+            value={values.switch}
+            onChange={() =>
+              formik.setFieldValue("switch", !formik.values.switch)
+            }
+            name="switch"
+            color="secondary"
+            />
+          }
+          label="Perteneces a un equipo ya crado"
+          />
+        <div>
+         {values.switch && (
+         <>
+          <label htmlFor="teamID">Por favor Introduce el identificador de equipo</label>
+            <input
+            name="teamID"
+            onChange={handleChange}
+            value={values.teamID}
+            type="text"
+            />
+          </>
+          )}
+         </div>
         <div>
         <label htmlFor="">Rol</label>
           <select 
@@ -123,7 +188,7 @@ const Register = () => {
         <div>
         <label htmlFor="">Continent</label>
           <select 
-          onChange={handleChange} 
+          onChange={e => {handleChangeContinent(e.target.value)}} 
           value={values.continent} 
           name="continent"
           className={errors.continent && touched.continent ? 'errors' : ''}
