@@ -3,6 +3,15 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useFormik } from 'formik'
 import './Auth.styles.css'
 
+const axiosConfig = {
+  headers: {
+      'Content-Type' : 'application/json',
+      "Accept": "Token",
+      "Access-Control-Allow-Origin": "*",
+
+  }
+};
+
 const Login = () => {
   
   const [email, setEmail] = useState('')
@@ -28,8 +37,27 @@ const Login = () => {
 
     const onSubmit = (e) => {
       
-       localStorage.setItem("logged", "yes");
-       navigate('/', {replace: true})
+      fetch("//localhost:8888/auth/login", {
+        method: "POST",
+        headers: {
+          'Content-Type' : 'application/json',
+          "Access-Control-Allow-Origin": "*",
+          "Accept": "Token"
+        },
+        body: JSON.stringify({
+          user: {
+            email: values.email,
+            password: values.password
+            }
+          })
+      }).then(res => {
+        console.log(res);
+       return res.json()
+        // 
+      }).then(data => {
+        console.log(data);
+        navigate('/registered?teamID=' + data.teamID)
+      })
     }
 
     const formik = useFormik({initialValues, validate, onSubmit});

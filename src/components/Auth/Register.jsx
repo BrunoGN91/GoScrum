@@ -95,7 +95,7 @@ const Register = () => {
         })
       }).then(res => {
         res.json()
-        // navigate('/registered' + teamId)
+        navigate('/login')
       })
       
     }
