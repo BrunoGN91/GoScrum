@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useFormik } from 'formik'
 import './Auth.styles.css'
-
+import * as Yup from 'yup'
 const axiosConfig = {
   headers: {
       'Content-Type' : 'application/json',
@@ -17,27 +17,22 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const initialValues = {
-    email: '',
+    userName: '',
     password: ''
   }
+  const requiredField = "* El campo es olbigatorio"
+  const validationSchema = () => 
+    
+  Yup.object().shape({
+    userName: Yup.string().min(4, "minimo 4 caracteres").required(requiredField),
+    password: Yup.string().min(4, "minimo 4 caracteres").required(requiredField)
+  })
+
   const navigate = useNavigate()
-  const validate = (values) => {
-    const errors = {}
-
-    if(!values.email) {
-      errors.email = "El email es requerido"
-    }
-    if(!values.password) {
-      errors.password = "La password no puede estar vacía"
-    }
-
-    return errors
-  }
-
 
     const onSubmit = (e) => {
       
-      fetch("//localhost:8888/auth/login", {
+      fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/login`, {
         method: "POST",
         headers: {
           'Content-Type' : 'application/json',
@@ -46,7 +41,7 @@ const Login = () => {
         },
         body: JSON.stringify({
           user: {
-            email: values.email,
+            userName: values.userName,
             password: values.password
             }
           })
@@ -56,13 +51,15 @@ const Login = () => {
         // 
       }).then(data => {
         console.log(data);
-        navigate('/registered?teamID=' + data.teamID)
+        localStorage.setItem("token", data?.token)
+        navigate('/', { replace: true})
+        
       })
     }
 
-    const formik = useFormik({initialValues, validate, onSubmit});
+    const formik = useFormik({initialValues, validationSchema, onSubmit});
 
-    const { handleSubmit, handleChange, values, errors} = formik
+    const { handleSubmit, handleChange, values, touched, handleBlur, errors} = formik
 
   return (
     <>
@@ -73,23 +70,29 @@ const Login = () => {
        >
         <h1>Iniciar sesión</h1>
         <div>
-          <label htmlFor="">Email</label>
+          <label htmlFor="">Username</label>
           <input 
           onChange={handleChange} 
-          value={values.email} 
-          type="email" 
-          name="email"/>
+          value={values.userName} 
+          type="text" 
+          name="userName"
+          className={errors.userName && touched.userName ? 'errors' : ''}
+          onBlur={handleBlur}
+          />
         </div>
-        {errors.email && <span>{errors.email}</span>}
+        {errors.userName && touched.userName && <span>{errors.userName}</span>}
         <div>
           <label htmlFor="">Contraseña</label>
           <input 
           onChange={handleChange} 
           value={values.password} 
           type="password" 
-          name="password"/>
+          name="password"
+          onBlur={handleBlur}
+          className={errors.password && touched.password ? 'errors' : ''}
+          />
         </div>
-        {errors.password && <span>{errors.password}</span>}
+        {errors.password && touched.password && <span>{errors.password}</span>}
         <button
         type="submit"
         >Enviar</button>

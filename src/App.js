@@ -4,13 +4,14 @@ import { AnimatePresence, motion} from 'framer-motion'
 import './App.css';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register'
+import Registered from './components/Registered/Registered';
 
 import Tasks from './components/Tasks/Tasks';
 
 const Error404 = lazy (() => import('./components/Errores/Error404'))
 
 const RequireAuth = ({children}) => {
-  if(!localStorage.getItem("logged")) {
+  if(!localStorage.getItem("token")) {
     return <Navigate to="/login" replace={true} />
   } 
     return children
@@ -82,6 +83,15 @@ const App = () => {
         </Suspense>
         
       </motion.div>}></Route>
+      <Route path='/registered/:teamID' element={
+       <motion.div 
+       className='page' 
+       initial="out" 
+       animate="in" 
+       exit="out" 
+       variants={pageTransistion}>
+        <Registered/>
+        </motion.div>}></Route>
 
     </Routes>
     </AnimatePresence>

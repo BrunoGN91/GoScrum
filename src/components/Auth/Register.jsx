@@ -61,25 +61,10 @@ const Register = () => {
         setFieldValue('region', "Otro")
       }
     }
-    
-
-  const validate = (values) => {
-    const errors = {}
-
-    if(!values.email) {
-      errors.email = "El email es requerido"
-    }
-    if(!values.password) {
-      errors.password = "La password no puede estar vacía"
-    }
-
-    return errors
-  }
-
 
     const onSubmit = (e) => {
        const teamId = !values.teamID ? uuidv4() : values.teamID
-       fetch('//localhost:8888/auth/register', {
+       fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/register`, {
         method: "POST",
         headers: axiosConfig,
         body: JSON.stringify({
@@ -95,14 +80,14 @@ const Register = () => {
         })
       }).then(res => {
         res.json()
-        navigate('/login')
+        navigate('/registered/' + res?.user.teamID, { replace: true})
       })
       
     }
 
     const formik = useFormik({initialValues, onSubmit, validationSchema});
 
-    const { setFieldValue, handleSubmit, handleChange, values, errors, touched} = formik
+    const { setFieldValue, handleSubmit, handleChange, values, errors, touched, handleBlur} = formik
 
   return (
     <>
@@ -119,6 +104,7 @@ const Register = () => {
           value={values.userName} 
           type="text" 
           name="userName"
+          onBlur={handleBlur}
           className={errors.userName && touched.userName ? 'errors' : ''}
           />
         </div>
@@ -130,6 +116,7 @@ const Register = () => {
           value={values.password} 
           type="password" 
           name="password"
+          onBlur={handleBlur}
           className={errors.password && touched.password ? 'errors' : ''}
           />
         </div>
@@ -141,6 +128,7 @@ const Register = () => {
           value={values.email} 
           type="text" 
           name="email"
+          onBlur={handleBlur}
           className={errors.email && touched.email  ? 'errors' : ''}
           />
         </div>

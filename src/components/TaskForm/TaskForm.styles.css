@@ -10,7 +10,8 @@
 }
 
 .task_form input.errors,
-.task_form select.errors {
+.task_form select.errors,
+.task_form textarea.errors {
     border: 1px red solid;
 }
 

@@ -10,7 +10,8 @@ const TaskForm = () => {
     Yup.object().shape({
       title: Yup.string().min(5, "* El título debe tener al menos 5 caracteres").required(requiredField),
       status: Yup.string().required(requiredField),
-      priority: Yup.string().required(requiredField)
+      importance: Yup.string().required(requiredField),
+      description: Yup.string().required(requiredField)
 
     })
     
@@ -18,7 +19,7 @@ const TaskForm = () => {
     const initialValues = {
       title: '',
       status: '',
-      priority: '',
+      importance: '',
       description: '',
     }
   
@@ -46,7 +47,7 @@ const TaskForm = () => {
                     type="text" 
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className={errors.title ? "errors" : ''}
+                    className={errors.title && errors.title ? "errors" : ''}
                     />
                     {errors.title && touched.title && <span>{errors.title}</span>}
                 </div>
@@ -55,12 +56,12 @@ const TaskForm = () => {
                 <select
                 onChange={handleChange}
                 onBlur={handleBlur}
-                className={errors.status ? "errors" : ''}
+                className={errors.status && errors.status ? "errors" : ''}
                 name="status">
                         <option value="" >Seleccionar opción</option>
-                        <option value="new">Nueva</option>
-                        <option value="inProcess">En proceso</option>
-                        <option value="finished">Terminada</option>
+                        <option value="NEW">Nueva</option>
+                        <option value="IN PROGRESS">En proceso</option>
+                        <option value="FINISHED">Terminada</option>
                 </select>   
                 {errors.status && touched.status && <span>{errors.status}</span>}          
                 </div>
@@ -69,14 +70,14 @@ const TaskForm = () => {
                 <select
                 onChange={handleChange}
                 onBlur={handleBlur}
-                className={errors.priority ? "errors" : ''}
-                name="priority">
+                className={errors.importance && touched.importance ? "errors" : ''}
+                name="importance">
                         <option value="" >Seleccionar opción</option>
-                        <option value="low">Baja</option>
-                        <option value="medium">Media</option>
-                        <option value="high">Alta</option>
+                        <option value="LOW">Baja</option>
+                        <option value="MEDIUM">Media</option>
+                        <option value="HIGH">Alta</option>
                 </select>   
-                {errors.priority && touched.priority && <span>{errors.priority}</span>}          
+                {errors.importance && touched.importance && <span>{errors.importance}</span>}          
                 </div>
                 
             </div>
@@ -87,8 +88,11 @@ const TaskForm = () => {
                 id="" 
                 cols="30" 
                 rows="10"
+                onBlur={handleBlur}
+                className={errors.description && touched.description ? "errors" : ''}
                 placeholder='Descripción'
                 ></textarea>
+                {errors.description && touched.description && <span>{errors.description}</span>}          
             </div>
             <button type='submit'>Crear</button>
         </form>
