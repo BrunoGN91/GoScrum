@@ -9,16 +9,6 @@ import {useNavigate} from 'react-router-dom'
 import axios from 'axios'
 
 
-
-const axiosConfig = {
-  headers: {
-      'Content-Type' : 'application/json',
-      "Accept": "Token",
-      "Access-Control-Allow-Origin": "*",
-
-  }
-};
-
 const Register = () => {
   const [data, setData] = useState()
   const navigate = useNavigate()
@@ -80,9 +70,10 @@ const Register = () => {
             region: values.region
           }
         })
-      }).then(res => {
-        res.json()
-        navigate('/registered/' + res?.user.teamID, { replace: true})
+      }).then(res => res.json())
+        .then(data => {
+        console.log(data);
+         navigate('/registered/' + data?.result.user.teamID, { replace: true})
       })
       
     }
@@ -170,8 +161,8 @@ const Register = () => {
           className={errors.role && touched.role ? 'errors' : ''}
           >
             <option value="">Seleccionar una opción</option>
-            <option value="teamMember">Team Member</option>
-            <option value="teamLeader">Team Leader</option>
+            <option value="Team Member">Team Member</option>
+            <option value="Team Leader">Team Leader</option>
           </select>
         </div>
         {errors.role && touched.role && <span>{errors.role}</span>}

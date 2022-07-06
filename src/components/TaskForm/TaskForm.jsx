@@ -1,8 +1,12 @@
-import React from 'react'
+
+import React, {useState, useEffect} from 'react'
 import './TaskForm.styles.css'
 import { useNavigate } from 'react-router-dom'
 import {useFormik, validateYupSchema } from 'formik'
 import * as Yup from 'yup'
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const TaskForm = () => {
     const requiredField = "* El campo es olbigatorio"
@@ -28,25 +32,22 @@ const TaskForm = () => {
   
   
       const onSubmit = (e) => {
-        
-        fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/register`, {
+        fetch(`${process.env.REACT_APP_API_ENDPOINT}/task`, {
          method: "POST",
          headers: {
-          'Content-Type' : 'application/json'
+          'Content-Type' : 'application/json',
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
          },
-         body: JSON.stringify({
-           task: {
-             title: values.title,
-             status: values.status,
-             importance: values.importance,
-             description: values.description
-           }
-         })
-       }).then(res => {
-         res.json()
-         
-       }).then(data => {
+         body: JSON.stringify({task: {
+          title: values.title,
+          status: values.status,
+          importance: values.importance,
+          description: values.description
+         }})
+       }).then(res => res.json()
+       ).then(data => {
         resetForm()
+        toast("Tu tarea se creo")
        })
        
      }
@@ -122,6 +123,17 @@ const TaskForm = () => {
             </div>
             <button type='submit'>Crear</button>
         </form>
+        <ToastContainer 
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        />
     </section>
   )
 }

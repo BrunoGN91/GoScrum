@@ -3,6 +3,8 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useFormik } from 'formik'
 import './Auth.styles.css'
 import * as Yup from 'yup'
+import { swal } from '../../utils/Alert'
+
 const axiosConfig = {
   headers: {
       'Content-Type' : 'application/json',
@@ -38,20 +40,17 @@ const Login = () => {
           'Content-Type' : 'application/json'
         },
         body: JSON.stringify({
-          user: {
             userName: values.userName,
             password: values.password
-            }
           })
-      }).then(res => {
-        console.log(res);
-       return res.json()
-        // 
-      }).then(data => {
-        console.log(data);
-        localStorage.setItem("token", data?.token)
+      }).then(res => res.json())
+        .then(data => {
+      if(data?.status_code === 200) {
+        localStorage.setItem("token", data?.result?.token)
         navigate('/', { replace: true})
-        
+      } else {
+        swal()
+      }   
       })
     }
 
