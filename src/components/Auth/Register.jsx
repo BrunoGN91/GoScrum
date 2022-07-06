@@ -66,7 +66,9 @@ const Register = () => {
        const teamId = !values.teamID ? uuidv4() : values.teamID
        fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/register`, {
         method: "POST",
-        headers: axiosConfig,
+        headers: {
+          'Content-Type' : 'application/json'
+        },
         body: JSON.stringify({
           user: {
             userName: values.userName,

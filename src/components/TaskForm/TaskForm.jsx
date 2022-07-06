@@ -1,6 +1,7 @@
 import React from 'react'
 import './TaskForm.styles.css'
-import {useFormik } from 'formik'
+import { useNavigate } from 'react-router-dom'
+import {useFormik, validateYupSchema } from 'formik'
 import * as Yup from 'yup'
 
 const TaskForm = () => {
@@ -15,7 +16,7 @@ const TaskForm = () => {
 
     })
     
-
+    const navigate = useNavigate()
     const initialValues = {
       title: '',
       status: '',
@@ -23,14 +24,35 @@ const TaskForm = () => {
       description: '',
     }
   
+      
+  
+  
       const onSubmit = (e) => {
-        alert('ok')
-      }
-  
-      const formik = useFormik({initialValues, onSubmit, validationSchema });
-  
-      const { handleSubmit, handleChange, errors, touched, handleBlur} = formik
-  
+        
+        fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/register`, {
+         method: "POST",
+         headers: {
+          'Content-Type' : 'application/json'
+         },
+         body: JSON.stringify({
+           task: {
+             title: values.title,
+             status: values.status,
+             importance: values.importance,
+             description: values.description
+           }
+         })
+       }).then(res => {
+         res.json()
+         
+       }).then(data => {
+        resetForm()
+       })
+       
+     }
+     const formik = useFormik({initialValues, onSubmit, validationSchema });
+     const { resetForm, handleSubmit, handleChange, errors, touched, handleBlur, values} = formik
+
 
 
   return (
@@ -47,6 +69,7 @@ const TaskForm = () => {
                     type="text" 
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    value={values.title}
                     className={errors.title && errors.title ? "errors" : ''}
                     />
                     {errors.title && touched.title && <span>{errors.title}</span>}
@@ -56,6 +79,7 @@ const TaskForm = () => {
                 <select
                 onChange={handleChange}
                 onBlur={handleBlur}
+                value={values.status}
                 className={errors.status && errors.status ? "errors" : ''}
                 name="status">
                         <option value="" >Seleccionar opción</option>
@@ -68,6 +92,7 @@ const TaskForm = () => {
                 
                 <div>
                 <select
+                value={values.importance}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className={errors.importance && touched.importance ? "errors" : ''}
@@ -83,6 +108,7 @@ const TaskForm = () => {
             </div>
             <div>
                 <textarea 
+                value={values.description}
                 onChange={handleChange} 
                 name="description" 
                 id="" 

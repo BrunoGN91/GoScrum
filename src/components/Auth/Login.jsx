@@ -35,9 +35,7 @@ const Login = () => {
       fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/login`, {
         method: "POST",
         headers: {
-          'Content-Type' : 'application/json',
-          "Access-Control-Allow-Origin": "*",
-          "Accept": "Token"
+          'Content-Type' : 'application/json'
         },
         body: JSON.stringify({
           user: {
