@@ -11,6 +11,17 @@ header > img {
 
 }
 
+.wrapper_right_header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+}
+
+.wrapper_right_header div:first-child {
+    padding-right: 10px;
+}
+
 header > div {
     cursor: pointer
 }

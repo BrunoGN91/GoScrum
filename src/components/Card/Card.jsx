@@ -1,17 +1,45 @@
-import React from 'react'
+import React, {useState} from 'react'
+import './Card.styles.css'
 
 const Card = ({data}) => {
 
- 
+  const [showMore, setShowMore] = useState(false)
+  
+  const limitString = (str) => {
+    if(str.length > 50) {
+        return { string: str.slice(0,50).concat("..."), addButton: true}
+    }
+    return { string: str, addButton: false}
+}  
+
+ const dateTime = new Date(data.createdAt).toLocaleString() + " hs."
   return (
     <div className='card'>
                         <div className='close'>x</div>
                         <h3>{data.title}</h3>
-                        <h6>{data.createdAt}</h6>
+                        <h6>{dateTime}</h6>
                         <h4>{data.user.userName}</h4>
-                        <button type="button">{data.status}</button>
-                        <button type="button">{data.importance}</button>
-                        <p>{data.description}</p>
+                        <button className={data.status.toLowerCase()} type="button">{data.status.toLowerCase()}</button>
+                        <button className={data.importance.toLowerCase()} type="button">{data.importance.toLowerCase()}</button>
+                       {!showMore && <p>{limitString(data.description).string}</p>}
+                            {showMore && (
+                            <>
+                                  <p>{data.description}</p>
+                                  <button 
+                                    type="button" 
+                                    onClick={() => setShowMore(!showMore)}>
+                                      Ver menos
+                                  </button>
+                            </>
+                            )}
+                            {!showMore && limitString(data.description).addButton && 
+                             (<button 
+                              type="button" 
+                              onClick={() => setShowMore(!showMore)}>
+                                Ver más
+                            </button>)}
+                            
+                        
                     </div>
   )
 }

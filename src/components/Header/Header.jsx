@@ -9,15 +9,16 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token')
+    localStorage.removeItem('userName')
+
     navigate('/', {replace: false})
   }
   return (
     <header>
         <span>Go Scrum</span>
-        <div
-        onClick={handleLogout}
-        >
-            x
+        <div className="wrapper_right_header">
+          <div>{localStorage.getItem("userName")}</div>
+          <div onClick={handleLogout}>x</div>
         </div>
     </header>
   )
