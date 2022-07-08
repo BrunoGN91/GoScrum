@@ -9,7 +9,7 @@ import Card from '../Card/Card'
 import TaskForm from '../TaskForm/TaskForm'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormControlLabel, Radio, RadioGroup, FormControl  } from '@mui/material'
-import { getTasks, deleteTask } from '../../store/actions/tasksAction'
+import { getTasks, deleteTask, editTask } from '../../store/actions/tasksAction'
 
 
 
@@ -25,7 +25,7 @@ const Tasks = () => {
     
 useEffect(() => {
     dispatch(getTasks(taskFromWho === "ME" ? "/me" : ''))
-},[taskFromWho])
+},[taskFromWho, dispatch])
 
 const { loading, error, tasks} = useSelector(state => {
     return state.tasksReducer
@@ -50,14 +50,16 @@ useEffect(() => {
 if(error) return <div>Hay un error</div>
 
     const handleDeleteCard = (id) => dispatch(deleteTask(id))
+    const handleEditCardStatus = (data) => dispatch(editTask(data))
+
 
     const renderAllCards = () => {
-        return renderList?.map(data => <Card deleteCard={handleDeleteCard} key={data._id} data={data}/>)
+        return renderList?.map(data => <Card deleteCard={handleDeleteCard} editCardStatus={handleEditCardStatus} key={data._id} data={data}/>)
     }
     const renderColumnTasks = text => { 
         return renderList
         ?.filter(data => data.status === text)
-        .map(data => <Card deleteCard={handleDeleteCard} key={data._id} data={data}/>)
+        .map(data => <Card deleteCard={handleDeleteCard} editCardStatus={handleEditCardStatus} key={data._id} data={data}/>)
 
     }
   

@@ -54,7 +54,7 @@ const Register = () => {
 
     const onSubmit = (e) => {
        const teamId = !values.teamID ? uuidv4() : values.teamID
-       fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/register`, {
+       fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/register`, { // Reemplazar usando redeux
         method: "POST",
         headers: {
           'Content-Type' : 'application/json'

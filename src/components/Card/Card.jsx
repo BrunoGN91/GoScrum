@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import './Card.styles.css'
 
 const Card = ({
+  editCardStatus,
   deleteCard,
   data
 }) => {
@@ -22,7 +23,7 @@ const Card = ({
                         <h3>{data.title}</h3>
                         <h6>{dateTime}</h6>
                         <h4>{data.user.userName}</h4>
-                        <button className={data.status.toLowerCase()} type="button">{data.status.toLowerCase()}</button>
+                        <button className={data.status.toLowerCase()} type="button" onClick={() => editCardStatus(data)}>{data.status.toLowerCase()}</button>
                         <button className={data.importance.toLowerCase()} type="button">{data.importance.toLowerCase()}</button>
                        {!showMore && <p>{limitString(data.description).string}</p>}
                             {showMore && (

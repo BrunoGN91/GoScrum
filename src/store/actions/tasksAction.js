@@ -42,3 +42,33 @@ export const deleteTask = (id) => dispatch => {
     .then(() => dispatch(getTasks('')))
     .catch(err => dispatch(tasksFailure(err)))
 }
+
+export const editTask = (data) => dispatch => {
+
+    const statusArray = [
+        "NEW",
+        "IN PROGRESS",
+        "FINISHED"
+    ]
+
+    const newStatusIndex = statusArray.indexOf(data.status) > 1 ? 0 : statusArray.indexOf(data.status) + 1
+    console.log(data._id);
+    fetch(`${API_ENDPOINT}/task/${data._id}`, {
+        method: "PATCH",
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        body: JSON.stringify({
+            task: {
+                title: data.title,
+                importance: data.importance,
+                status: statusArray[newStatusIndex],
+                description: data.description
+            }
+        })
+    })
+    .then(res => res.json())
+    .then(() => dispatch(getTasks('')))
+    .catch(err => dispatch(tasksFailure(err)))
+}

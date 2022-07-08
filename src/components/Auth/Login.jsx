@@ -34,7 +34,7 @@ const Login = () => {
 
     const onSubmit = (e) => {
       
-      fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/login`, {
+      fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/login`, { // Reemplazar usando redeux
         method: "POST",
         headers: {
           'Content-Type' : 'application/json'
