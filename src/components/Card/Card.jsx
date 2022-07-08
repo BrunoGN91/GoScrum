@@ -1,7 +1,10 @@
 import React, {useState} from 'react'
 import './Card.styles.css'
 
-const Card = ({data}) => {
+const Card = ({
+  deleteCard,
+  data
+}) => {
 
   const [showMore, setShowMore] = useState(false)
   
@@ -15,7 +18,7 @@ const Card = ({data}) => {
  const dateTime = new Date(data.createdAt).toLocaleString() + " hs."
   return (
     <div className='card'>
-                        <div className='close'>x</div>
+                        <div className='close' onClick={() => deleteCard(data._id)}>x</div>
                         <h3>{data.title}</h3>
                         <h6>{dateTime}</h6>
                         <h4>{data.user.userName}</h4>

@@ -7,7 +7,9 @@ import Header from '../Header/Header'
 import { useResize } from '../../hooks/useResize'
 import Card from '../Card/Card'
 import TaskForm from '../TaskForm/TaskForm'
+import { useSelector, useDispatch } from 'react-redux'
 import { FormControlLabel, Radio, RadioGroup, FormControl  } from '@mui/material'
+import { getTasks, deleteTask } from '../../store/actions/tasksAction'
 
 
 
@@ -17,27 +19,25 @@ const Tasks = () => {
     const [list, setList] = useState(null)
     const [taskFromWho, setTaskFromWho] = useState("ALL")
     const [renderList, setRenderList] = useState(null)
-    const [loading, setLoading] = useState(false)
     const [search, setSearch] = useState("")
 
+    const dispatch = useDispatch()
+    
 useEffect(() => {
-    setLoading(true)
-        fetch(`${process.env.REACT_APP_API_ENDPOINT}/task${taskFromWho === "ME" ? "/me" : ''}`, {
-         method: "GET",
-         headers: {
-          'Content-Type' : 'application/json',
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-         }
-       }).then(res => res.json()
-       ).then(data => {
-        setTimeout(() => {
-            setList(data.result)
-            setRenderList(data.result)
-            setLoading(false)
-        }, 1000)
-       })
-     
+    dispatch(getTasks(taskFromWho === "ME" ? "/me" : ''))
 },[taskFromWho])
+
+const { loading, error, tasks} = useSelector(state => {
+    return state.tasksReducer
+})
+
+useEffect(() => {
+    if(tasks?.length) {
+        setList(tasks)
+        setRenderList(tasks)
+
+    }
+}, [tasks])
 
 useEffect(() => {
     if(search) {
@@ -45,19 +45,23 @@ useEffect(() => {
             list.filter(data => data.title.startsWith(search))
         )
     } else setRenderList(list)
-     
 },[search])
 
+if(error) return <div>Hay un error</div>
+
+    const handleDeleteCard = (id) => dispatch(deleteTask(id))
+
     const renderAllCards = () => {
-        return renderList?.map(data => <Card key={data._id} data={data}/>)
+        return renderList?.map(data => <Card deleteCard={handleDeleteCard} key={data._id} data={data}/>)
     }
     const renderColumnTasks = text => { 
         return renderList
         ?.filter(data => data.status === text)
-        .map(data => <Card key={data._id} data={data}/>)
+        .map(data => <Card deleteCard={handleDeleteCard} key={data._id} data={data}/>)
 
     }
   
+    
 
     const handleChangeImportance = (e) => {
         if(e.currentTarget.value === "ALL") setRenderList(list)

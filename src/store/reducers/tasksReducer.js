@@ -4,7 +4,7 @@ import { TASKS_REQUEST, TASKS_FAILURE, TASKS_SUCCESS } from '../types'
 
 const initialState= {
     loading: false,
-    tasls: [],
+    tasks: [],
     error: ""
 }
 
