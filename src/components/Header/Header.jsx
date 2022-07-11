@@ -18,11 +18,13 @@ const Header = () => {
 
     navigate('/', {replace: false})
   }
+  console.log(tasks);
   return (
     <header>
-        <span>Go Scrum</span>
+        <span onClick={() => { navigate('/', {replace: true}) }}>Go Scrum</span>
         <div className="wrapper_right_header">
-          <div className='black'>Tareas creadas: {tasks?.length}</div>
+          <button onClick={() => { navigate('/donate')}}>Doná</button>
+          <div className='black'>Tareas creadas: {tasks?.length !== undefined ? tasks?.length : 0}</div>
           <div>{localStorage.getItem("userName")}</div>
           <div onClick={handleLogout}>x</div>
         </div>

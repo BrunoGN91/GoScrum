@@ -5,6 +5,7 @@ import './App.css';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register'
 import Registered from './components/Registered/Registered';
+import Donate from './components/Donate/Donate';
 
 import Tasks from './components/Tasks/Tasks';
 
@@ -92,7 +93,15 @@ const App = () => {
        variants={pageTransistion}>
         <Registered/>
         </motion.div>}></Route>
-
+        <Route path='/donate' element={
+       <motion.div 
+       className='page' 
+       initial="out" 
+       animate="in" 
+       exit="out" 
+       variants={pageTransistion}>
+        <Donate/>
+        </motion.div>}></Route>
     </Routes>
     </AnimatePresence>
     </>

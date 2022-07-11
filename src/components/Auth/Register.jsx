@@ -6,7 +6,7 @@ import './Auth.styles.css'
 import { v4 as uuidv4 } from 'uuid';
 import { Switch, FormControlLabel } from '@mui/material'
 import {useNavigate} from 'react-router-dom'
-import axios from 'axios'
+
 
 
 const Register = () => {
