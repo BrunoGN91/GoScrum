@@ -3,10 +3,10 @@ import './Donate.styles.css'
 
 import Header from '../Header/Header'
 
-const Donate = () => {
+export const Donate = () => {
   return (
     <>
-    <Header/>
+    {/* <Header/> */}
     <main>
         <h1>Colabora con el proyecto</h1>
         <a href="https://mpago.la/1qq2xkG" target="_blank">
@@ -16,5 +16,3 @@ const Donate = () => {
     </>
   )
 }
-
-export default Donate

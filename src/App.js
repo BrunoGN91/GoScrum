@@ -3,9 +3,9 @@ import { Route, Routes, Navigate, useLocation, useNavigate} from 'react-router-d
 import { AnimatePresence, motion} from 'framer-motion'
 import './App.css';
 import Login from './components/Auth/Login';
-import Register from './components/Auth/Register'
+import {Register }from './components/Auth/Register'
 import Registered from './components/Registered/Registered';
-import Donate from './components/Donate/Donate';
+import {Donate} from './components/Donate/Donate';
 
 import Tasks from './components/Tasks/Tasks';
 

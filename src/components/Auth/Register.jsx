@@ -9,7 +9,7 @@ import {useNavigate} from 'react-router-dom'
 
 
 
-const Register = () => {
+export const Register = () => {
   const [data, setData] = useState()
   const navigate = useNavigate()
 
@@ -160,7 +160,7 @@ const Register = () => {
           name="role"
           className={errors.role && touched.role ? 'errors' : ''}
           >
-            <option value="">Seleccionar una opción</option>
+            <option value="">Seleccionar una opción...</option>
             <option value="Team Member">Team Member</option>
             <option value="Team Leader">Team Leader</option>
           </select>
