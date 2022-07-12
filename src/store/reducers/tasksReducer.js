@@ -1,7 +1,5 @@
 import { TASKS_REQUEST, TASKS_FAILURE, TASKS_SUCCESS } from '../types'
 
-
-
 const initialState= {
     loading: false,
     tasks: [],
@@ -30,5 +28,4 @@ export const tasksReducer = (state = initialState, action) => {
         default:
             return state
     }
-    
 }

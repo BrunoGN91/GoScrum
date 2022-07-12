@@ -1,9 +1,12 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useFormik } from 'formik'
 import './Auth.styles.css'
 import * as Yup from 'yup'
 import { swal } from '../../utils/Alert'
+import { useSelector, useDispatch } from 'react-redux'
+import { loginProcess } from '../../store/actions/loginAction'
+
 
 const axiosConfig = {
   headers: {
@@ -22,6 +25,8 @@ const Login = () => {
     userName: '',
     password: ''
   }
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   const requiredField = "* El campo es olbigatorio"
   const validationSchema = () => 
     
@@ -29,31 +34,9 @@ const Login = () => {
     userName: Yup.string().min(4, "minimo 4 caracteres").required(requiredField),
     password: Yup.string().min(4, "minimo 4 caracteres").required(requiredField)
   })
-
-  const navigate = useNavigate()
-
     const onSubmit = (e) => {
-      
-      fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/login`, { // Reemplazar usando redeux
-        method: "POST",
-        headers: {
-          'Content-Type' : 'application/json'
-        },
-        body: JSON.stringify({
-            userName: values.userName,
-            password: values.password
-          })
-      }).then(res => res.json())
-        .then(data => {
-      if(data?.status_code === 200) {
-        localStorage.setItem("token", data?.result?.token)
-        localStorage.setItem("userName", data?.result?.user.userName)
-
-        navigate('/', { replace: true})
-      } else {
-        swal()
-      }   
-      })
+      dispatch(loginProcess(values))
+      navigate('/', { replace: true})
     }
 
     const formik = useFormik({initialValues, validationSchema, onSubmit});

@@ -2,6 +2,8 @@ import { TASKS_REQUEST, TASKS_FAILURE, TASKS_SUCCESS } from '../types'
 
 const { REACT_APP_API_ENDPOINT: API_ENDPOINT } = process.env
 
+// Tasks
+
 export const tasksRequest = () => ({
     type: TASKS_REQUEST,
 })
@@ -72,3 +74,5 @@ export const editTask = (data) => dispatch => {
     .then(() => dispatch(getTasks('')))
     .catch(err => dispatch(tasksFailure(err)))
 }
+
+
