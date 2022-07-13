@@ -91,8 +91,9 @@ export const Register = () => {
        >
         <h1>Registro</h1>
         <div>
-          <label htmlFor="">Nombre de usuario</label>
-          <input 
+          <label id="userNameLabel" htmlFor="userName">Nombre de usuario</label>
+          <input
+          id="userName" 
           onChange={handleChange} 
           value={values.userName} 
           type="text" 

@@ -18,9 +18,7 @@ const axiosConfig = {
 };
 
 const Login = () => {
-  
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+
   const initialValues = {
     userName: '',
     password: ''
@@ -34,10 +32,18 @@ const Login = () => {
     userName: Yup.string().min(4, "minimo 4 caracteres").required(requiredField),
     password: Yup.string().min(4, "minimo 4 caracteres").required(requiredField)
   })
-    const onSubmit = (e) => {
+   
+
+    // const { userName, token} = useSelector(state => {
+    //   return state.loginReducer
+    // })
+
+    const onSubmit = () => {
       dispatch(loginProcess(values))
       navigate('/', { replace: true})
     }
+    
+
 
     const formik = useFormik({initialValues, validationSchema, onSubmit});
 
@@ -52,8 +58,9 @@ const Login = () => {
        >
         <h1>Iniciar sesión</h1>
         <div>
-          <label htmlFor="">Username</label>
+          <label id="loginUserName" htmlFor="userName">Username</label>
           <input 
+          id="userName"
           onChange={handleChange} 
           value={values.userName} 
           type="text" 
@@ -64,7 +71,7 @@ const Login = () => {
         </div>
         {errors.userName && touched.userName && <span>{errors.userName}</span>}
         <div>
-          <label htmlFor="">Contraseña</label>
+          <label htmlFor="password" id="loginPassword" >Contraseña</label>
           <input 
           onChange={handleChange} 
           value={values.password} 

@@ -18,7 +18,7 @@ const Header = () => {
 
     navigate('/', {replace: false})
   }
-  console.log(tasks);
+  
   return (
     <header>
         <span onClick={() => { navigate('/', {replace: true}) }}>Go Scrum</span>

@@ -1,22 +1,23 @@
+import { LOGIN_SUCCESS, LOGIN_FAILURE } from '../types'
+
 
 
 const initialState= {
-    loginData: '',
+    userName: '',
+    token: '',
     error: ''
     
 }
 
 export const loginReducer = (state = initialState, action) => {
+    
     switch(action.type) {
-        case 'LOGIN_REQUEST':
+        case LOGIN_SUCCESS:
             return {
-                ...state,
+                userName: action.payload.user.userName,
+                token:  action.payload.token
             }
-        case 'LOGIN_SUCCESS':
-            return {
-                loginData: action.payload
-            }
-        case 'LOGIN_FAILURE':
+        case LOGIN_FAILURE:
             return {
                 error: action.payload
             }

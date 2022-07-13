@@ -1,21 +1,17 @@
-
 import { swal } from '../../utils/Alert'
+import { LOGIN_SUCCESS, LOGIN_FAILURE } from '../types'
+
 
 
 const { REACT_APP_API_ENDPOINT: API_ENDPOINT } = process.env
 
-
-export const loginRequest = () => ({
-    type: "LOGIN_REQUEST"
-})
-
 export const loginSuccess = (data) => ({
-    type: "LOGIN_SUCCESS",
+    type: LOGIN_SUCCESS,
     payload: data
 })
 
 export const loginFailure = (err) => ({
-    type: "LOGIN_FAILURE",
+    type: LOGIN_FAILURE,
     payload: err
 })
 
@@ -35,12 +31,12 @@ export const loginProcess = (user) => dispatch => {
       }).then(res => res.json())
         .then(data => {
       if(data?.status_code === 200) {
-        
-        localStorage.setItem("token", data?.result?.token)
-        localStorage.setItem("userName", data?.result?.user.userName)
-       
+        dispatch(loginSuccess(data?.result))
+        localStorage.setItem("userName", data?.result.user.userName)
+        localStorage.setItem("token", data?.result.token)
       } else {
         swal()
       }   
       })
 }
+
