@@ -4,13 +4,15 @@ import { composeWithDevTools } from "@redux-devtools/extension"
 import rootReducer from "./reducers/rootReducer"
 import { tasksReducer } from "./reducers/tasksReducer";
 import { loginReducer } from "./reducers/loginReducer";
+import { registerReducer } from "./reducers/registerReducer";
+
 
 const persistentState= {
     userName: localStorage.getItem("userName"),
     token: localStorage.getItem("token"),
     error: ''
 }
-export const store = createStore(combineReducers({tasksReducer, loginReducer}), persistentState, composeWithDevTools(applyMiddleware(thunk)))
+export const store = createStore(combineReducers({tasksReducer, loginReducer, registerReducer}), persistentState, composeWithDevTools(applyMiddleware(thunk)))
 
 store.subscribe(() => {
         const { loginReducer } = store.getState();

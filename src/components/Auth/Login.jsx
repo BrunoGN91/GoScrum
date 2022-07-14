@@ -8,15 +8,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { loginProcess } from '../../store/actions/loginAction'
 
 
-const axiosConfig = {
-  headers: {
-      'Content-Type' : 'application/json',
-      "Accept": "Token",
-      "Access-Control-Allow-Origin": "*",
-
-  }
-};
-
 const Login = () => {
 
   const initialValues = {

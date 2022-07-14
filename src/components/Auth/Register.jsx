@@ -6,7 +6,8 @@ import './Auth.styles.css'
 import { v4 as uuidv4 } from 'uuid';
 import { Switch, FormControlLabel } from '@mui/material'
 import {useNavigate} from 'react-router-dom'
-
+import { useSelector, useDispatch } from 'react-redux'
+import { registerProcess } from '../../store/actions/registerAction'
 
 
 export const Register = () => {
@@ -51,30 +52,31 @@ export const Register = () => {
         setFieldValue('region', "Otro")
       }
     }
-
-    const onSubmit = (e) => {
-       const teamId = !values.teamID ? uuidv4() : values.teamID
-       fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/register`, { // Reemplazar usando redeux
-        method: "POST",
-        headers: {
-          'Content-Type' : 'application/json'
-        },
-        body: JSON.stringify({
-          user: {
-            userName: values.userName,
-            password: values.password,
-            email: values.email,
-            teamID: teamId,
-            role: values.role,
-            continent: values.continent,
-            region: values.region
-          }
-        })
-      }).then(res => res.json())
-        .then(data => {
-        console.log(data);
-         navigate('/registered/' + data?.result.user.teamID, { replace: true})
-      })
+    const dispatch = useDispatch()
+    const onSubmit = () => {
+      dispatch(registerProcess(values))
+      //  const teamId = !values.teamID ? uuidv4() : values.teamID
+      //  fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/register`, { // Reemplazar usando redeux
+      //   method: "POST",
+      //   headers: {
+      //     'Content-Type' : 'application/json'
+      //   },
+      //   body: JSON.stringify({
+      //     user: {
+      //       userName: values.userName,
+      //       password: values.password,
+      //       email: values.email,
+      //       teamID: teamId,
+      //       role: values.role,
+      //       continent: values.continent,
+      //       region: values.region
+      //     }
+      //   })
+      // }).then(res => res.json())
+      //   .then(data => {
+      //   console.log(data);
+      //    navigate('/registered/' + data?.result.user.teamID, { replace: true})
+      // })
       
     }
 

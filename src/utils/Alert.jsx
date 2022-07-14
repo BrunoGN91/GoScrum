@@ -15,3 +15,17 @@ export const swal = () => {
   )
 }
 
+export const swalRegister = (value) => {
+  return (
+    Swal.fire({
+        title: `Todo listo ${value}`,
+        text: "Ya puedes continuar y empezar tu aventura Go Scrum",
+        confirmButtonText: "Aceptar",
+        width: "400px",
+        timer: 10000,
+        timerProgressBar: true
+      })
+  )
+}
+
+

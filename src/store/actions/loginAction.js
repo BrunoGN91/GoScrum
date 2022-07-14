@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom'
+
 import { swal } from '../../utils/Alert'
 import { LOGIN_SUCCESS, LOGIN_FAILURE } from '../types'
 
