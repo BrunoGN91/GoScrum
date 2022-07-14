@@ -1,7 +1,6 @@
+import { Navigate } from 'react-router-dom'
 import { swal } from '../../utils/Alert'
 import { LOGIN_SUCCESS, LOGIN_FAILURE } from '../types'
-
-
 
 const { REACT_APP_API_ENDPOINT: API_ENDPOINT } = process.env
 
@@ -17,9 +16,7 @@ export const loginFailure = (err) => ({
 
 
 export const loginProcess = (user) => dispatch => {
-   
-    
-    fetch(`${API_ENDPOINT}/auth/login`, { // Reemplazar usando redeux
+    fetch(`${API_ENDPOINT}/auth/login`, { 
         method: "POST",
         headers: {
           'Content-Type' : 'application/json'
@@ -32,8 +29,7 @@ export const loginProcess = (user) => dispatch => {
         .then(data => {
       if(data?.status_code === 200) {
         dispatch(loginSuccess(data?.result))
-        localStorage.setItem("userName", data?.result.user.userName)
-        localStorage.setItem("token", data?.result.token)
+        
       } else {
         swal()
       }   

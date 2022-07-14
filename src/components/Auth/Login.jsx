@@ -33,15 +33,16 @@ const Login = () => {
     password: Yup.string().min(4, "minimo 4 caracteres").required(requiredField)
   })
    
-
-    // const { userName, token} = useSelector(state => {
-    //   return state.loginReducer
-    // })
-
+const { token } = useSelector(state => {
+  return state.loginReducer
+})
     const onSubmit = () => {
       dispatch(loginProcess(values))
-      navigate('/', { replace: true})
     }
+
+    useEffect(() => {
+      navigate('/', {replace: true})
+    }, [token])
     
 
 
@@ -54,7 +55,9 @@ const Login = () => {
      <div className="auth">
       <form
        action=""
+       id="form-element"
        onSubmit={handleSubmit}
+       
        >
         <h1>Iniciar sesión</h1>
         <div>
@@ -69,7 +72,7 @@ const Login = () => {
           onBlur={handleBlur}
           />
         </div>
-        {errors.userName && touched.userName && <span>{errors.userName}</span>}
+        {errors.userName && touched.userName && <span id="errorUserName">{errors.userName}</span>}
         <div>
           <label htmlFor="password" id="loginPassword" >Contraseña</label>
           <input 
