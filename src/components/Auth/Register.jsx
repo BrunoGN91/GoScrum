@@ -8,10 +8,11 @@ import {useNavigate} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { swalRegister } from '../../utils/Alert'
 import { registerProcess, registerLoadUp } from '../../store/actions/registerAction'
+import { registerSelectors } from '../../store/selectors/selectors'
 
 
 export const Register = () => {
-  const [data, setData] = useState()
+ 
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -40,9 +41,11 @@ export const Register = () => {
       region: Yup.string().required(requiredField)
     })
 
-    const { userName: usersNameRegistered } = useSelector(state => {
-      return state.registerReducer
-    })
+    // const { userName: usersNameRegistered } = useSelector(state => {
+    //   return state.registerReducer
+    // })
+
+    const usersNameRegistered = registerSelectors.userName
 
     const handleChangeContinent = (value) => {
       setFieldValue('continent', value)
