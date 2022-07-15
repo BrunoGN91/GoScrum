@@ -3,25 +3,17 @@ import { useFormik } from 'formik'
 import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
 import './Auth.styles.css'
-import { v4 as uuidv4 } from 'uuid';
 import { Switch, FormControlLabel } from '@mui/material'
 import {useNavigate} from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
-import { registerProcess } from '../../store/actions/registerAction'
+import { useDispatch, useSelector } from 'react-redux'
+import { swalRegister } from '../../utils/Alert'
+import { registerProcess, registerLoadUp } from '../../store/actions/registerAction'
 
 
 export const Register = () => {
   const [data, setData] = useState()
   const navigate = useNavigate()
-
-  useEffect(() => {
-    const URL_ENDPOINT = ""
-    fetch(URL_ENDPOINT)
-      .then(res => res.json())
-      .then(data => setData(data))
-  }, [])
-
-
+  const dispatch = useDispatch()
 
   const initialValues = {
     userName: '',
@@ -33,6 +25,8 @@ export const Register = () => {
     region: '',
     switch: false
   }
+
+ 
 
   const requiredField = "* El campo es olbigatorio"
     const validationSchema = () => 
@@ -46,40 +40,32 @@ export const Register = () => {
       region: Yup.string().required(requiredField)
     })
 
+    const { userName: usersNameRegistered } = useSelector(state => {
+      return state.registerReducer
+    })
+
     const handleChangeContinent = (value) => {
       setFieldValue('continent', value)
       if(value !== "America") {
         setFieldValue('region', "Otro")
       }
     }
-    const dispatch = useDispatch()
+   
     const onSubmit = () => {
       dispatch(registerProcess(values))
-      //  const teamId = !values.teamID ? uuidv4() : values.teamID
-      //  fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/register`, { // Reemplazar usando redeux
-      //   method: "POST",
-      //   headers: {
-      //     'Content-Type' : 'application/json'
-      //   },
-      //   body: JSON.stringify({
-      //     user: {
-      //       userName: values.userName,
-      //       password: values.password,
-      //       email: values.email,
-      //       teamID: teamId,
-      //       role: values.role,
-      //       continent: values.continent,
-      //       region: values.region
-      //     }
-      //   })
-      // }).then(res => res.json())
-      //   .then(data => {
-      //   console.log(data);
-      //    navigate('/registered/' + data?.result.user.teamID, { replace: true})
-      // })
-      
     }
 
+    useEffect(() => {
+      if(usersNameRegistered) {
+        swalRegister(usersNameRegistered).then(() => {
+          navigate('/', {replace: true})})
+          dispatch(registerLoadUp())
+          return;
+      } 
+    },[usersNameRegistered])
+
+   
+     
     const formik = useFormik({initialValues, onSubmit, validationSchema});
 
     const { setFieldValue, handleSubmit, handleChange, values, errors, touched, handleBlur} = formik

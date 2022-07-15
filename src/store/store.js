@@ -16,6 +16,9 @@ export const store = createStore(combineReducers({tasksReducer, loginReducer, re
 
 store.subscribe(() => {
         const { loginReducer } = store.getState();
+        const {registerReducer} = store.getState()
+       console.log(registerReducer);
         localStorage.setItem('userName', loginReducer.userName);
         localStorage.setItem('token', loginReducer.token);
+     
     });

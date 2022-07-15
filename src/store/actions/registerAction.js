@@ -1,26 +1,33 @@
 
 import { v4 as uuidv4 } from 'uuid';
-import { swalRegister } from '../../utils/Alert'
-
-
-import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE } from '../types'
+import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, RESET } from '../types'
 
 const { REACT_APP_API_ENDPOINT: API_ENDPOINT } = process.env
 
+export const registerReset = () => ({
+  type: RESET
+})
+export const registerRequest = () => ({
+  type: REGISTER_REQUEST
+})
 export const registerSuccess = (data) => ({
-    type: REGISTER_REQUEST,
+    type: REGISTER_SUCCESS,
     payload: data
 })
 
-export const registerFailure = (err) => ({
+export const registerFailure = () => ({
     type: REGISTER_FAILURE,
-    payload: err
+   
 })
 
+export const registerLoadUp = () => dispatch => {
+  dispatch(registerReset())
+}
 
 export const registerProcess = (userValues) => dispatch => {
     const teamId = !userValues.teamID ? uuidv4() : userValues.teamID
-    fetch(`${API_ENDPOINT}/auth/register`, { // Reemplazar usando redeux
+    dispatch(registerRequest())
+    fetch(`${API_ENDPOINT}/auth/register`, { 
      method: "POST",
      headers: {
        'Content-Type' : 'application/json'
@@ -38,9 +45,13 @@ export const registerProcess = (userValues) => dispatch => {
      })
    }).then(res => res.json())
      .then(data => {
-    dispatch(registerSuccess(data?.result?.user))
-     console.log(data?.result);
-     swalRegister(data?.result?.user.userName)
-     // navigate('/registered/' + data?.result.user.teamID, { replace: true})
+        if(data?.status_code === 201) {
+            dispatch(registerSuccess(data?.result?.user))
+        } else if (data?.status_code === 409){
+            dispatch(registerFailure())
+        } 
+   }).catch(() => {
+    const fetchError = new Error(400)
+    return fetchError
    })
 }

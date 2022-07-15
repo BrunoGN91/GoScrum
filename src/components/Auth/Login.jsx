@@ -3,7 +3,6 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useFormik } from 'formik'
 import './Auth.styles.css'
 import * as Yup from 'yup'
-import { swal } from '../../utils/Alert'
 import { useSelector, useDispatch } from 'react-redux'
 import { loginProcess } from '../../store/actions/loginAction'
 
@@ -11,7 +10,7 @@ import { loginProcess } from '../../store/actions/loginAction'
 const Login = () => {
 
   const initialValues = {
-    userName: '',
+    userName: localStorage.getItem("userName") ? localStorage.getItem("userName") : '',
     password: ''
   }
   const navigate = useNavigate()

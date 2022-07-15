@@ -1,33 +1,30 @@
-import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE } from '../types'
+import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, RESET } from '../types'
+import { swalRegisterCredentials, swalRegister } from '../../utils/Alert'
 
 const initialState= {
+    validate: false,
     userName: '',
-    password: '',
-    email: '',
-    teamID: '',
-    role: '',
-    continent: '',
-    region: ''
-    
+    error: ''
 }
 
 export const registerReducer = (state = initialState, action) => {
     
     switch(action.type) {
-        case REGISTER_SUCCESS:
-           
+        case RESET:
+            return initialState
+        case REGISTER_REQUEST:
             return {
+                ...state,
+                validate: true
+            }
+        case REGISTER_SUCCESS:
+            return {
+                validate: false,
                 userName: action.payload.userName,
-                password: action.payload.password,
-                email: action.payload.email,
-                teamID: action.payload.teamId,
-                role: action.payload.role,
-                continent: action.payload.continent,
-                region: action.payload.region
             }
         case REGISTER_FAILURE:
             return {
-                error: action.payload
+                error: swalRegisterCredentials()
             }
         default:
             return state
