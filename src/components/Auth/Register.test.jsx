@@ -47,16 +47,28 @@ describe("Register Component", () => {
     error: ''
         }),
       }));
-    
+
+      
+const mockedNavigator = jest.fn()
+jest.mock("react-router-dom", () => ({
+  ...(jest.requireActual("react-router-dom")),
+  useNavigate: () => mockedNavigator,
+}));   
 
 const mockStore = createMockStore([])
 
 const state = {
     validate: false,
-    userName: '',
-    error: ''
+    userName: 'NuevoUsuario',
+    error: 'Error'
 }
-const store = mockStore(state);
+const store = mockStore({
+    registerReducer: {
+        validate: false,
+        userName: 'NuevoUsuario',
+        error: 'Error'
+    }
+});
 
 beforeEach(() => {
     onSubmit.mockClear();

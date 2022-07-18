@@ -5,7 +5,9 @@ import './Auth.styles.css'
 import * as Yup from 'yup'
 import { useSelector, useDispatch } from 'react-redux'
 import { loginProcess } from '../../store/actions/loginAction'
-import { loginSelectors } from '../../store/selectors/selectors'
+import { registerSelectors } from '../../store/selectors/selectors'
+
+
 
 
 const Login = () => {
@@ -24,9 +26,11 @@ const Login = () => {
     password: Yup.string().min(4, "minimo 4 caracteres").required(requiredField)
   })
    
-  const token = loginSelectors.token
-
-
+  const { token } = useSelector(state => {
+    return state?.loginReducer
+  })
+   
+console.log(registerSelectors);
     const onSubmit = () => {
       dispatch(loginProcess(values))
     }

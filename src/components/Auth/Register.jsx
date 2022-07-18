@@ -41,11 +41,11 @@ export const Register = () => {
       region: Yup.string().required(requiredField)
     })
 
-    // const { userName: usersNameRegistered } = useSelector(state => {
-    //   return state.registerReducer
-    // })
+  
 
-    const usersNameRegistered = registerSelectors.userName
+    const {userName: usersNameRegistered }= useSelector( state => {
+      return state.registerReducer
+    })
 
     const handleChangeContinent = (value) => {
       setFieldValue('continent', value)
@@ -57,7 +57,7 @@ export const Register = () => {
     const onSubmit = () => {
       dispatch(registerProcess(values))
     }
-
+    console.log(registerSelectors.userName)
     useEffect(() => {
       if(usersNameRegistered) {
         swalRegister(usersNameRegistered).then(() => {

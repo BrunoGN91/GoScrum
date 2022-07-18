@@ -21,24 +21,28 @@ jest.mock("./Login")
 
 const mockSelector = jest.fn()
 const mockLogin = jest.fn()
+const mockedNavigator = jest.fn()
+
+jest.mock("react-router-dom", () => ({
+  ...(jest.requireActual("react-router-dom")),
+  useNavigate: () => mockedNavigator,
+}));
 
 jest.mock('react-redux', () => ({
     useSelector: mockSelector.mockImplementation(selector => selector()),
   }));
 jest.mock('../../store/selectors/selectors.js', () => ({
-    loginSelector: mockLogin.mockReturnValue({
-        userName: false,
-        token: '',
-        error: ''
-    }),
+    loginSelectors: mockLogin.mockReturnValue("LoginSelector"),
   }));
 const mockStore = createMockStore([]);
 const state = {
-    userName: '',
-    token: '',
-    error: ''
+    userName: 'NuevoUsuario',
+    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik51ZXZvVXN1YXJpb0B1c3VhcmlvLmNvbSIsInJvbGUiOiJUZWFtIExlYWRlciIsInVzZXJOYW1lIjoiTnVldm9Vc3VhcmlvIiwidGVhbUlkIjoiOWIzM2M2ZmYtZjE3Zi00YzhmLWI3NGMtM2U3MmNjY2FkZDUxIiwidXNlcklkIjoiNjJjNWQyMjU3ZGM5Nzg3MzQ3NzgwMDMyIiwiaWF0IjoxNjU4MTY4NDA1LCJleHAiOjE2NTgyNTQ4MDV9.c85jeamfZwmMJN-mT08Sxynx8o5ExGH1fMtYOszXG0o',
+    error: 'Error'
 }
-const store = mockStore(state);
+const store = mockStore({
+    loginReducer: state
+});
 
 // const server = setupServer(
 //     rest.get("http://localhost:8080/auth/data", (_, res, ctx) => {
@@ -82,10 +86,10 @@ it("Testing onSubmit", async () => {
     })
           
     await waitFor(() => {
-        expect(onSubmit).toHaveBeenCalledTimes(1)
+        expect(button).toHaveBeenCalledTimes(1)
     })
     
-    expect(onSubmit).toHaveBeenCalledWith({lazy: true})
+    expect(button).toHaveBeenCalledWith({lazy: true})
 
      }
 )

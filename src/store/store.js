@@ -7,6 +7,7 @@ import { loginReducer } from "./reducers/loginReducer";
 import { registerReducer } from "./reducers/registerReducer";
 
 
+
 const persistentState= {
     userName: localStorage.getItem("userName"),
     token: localStorage.getItem("token"),
@@ -16,8 +17,7 @@ export const store = createStore(combineReducers({tasksReducer, loginReducer, re
 
 store.subscribe(() => {
         const { loginReducer } = store.getState();
-        const {registerReducer} = store.getState()
-       console.log(registerReducer);
+       
         localStorage.setItem('userName', loginReducer.userName);
         localStorage.setItem('token', loginReducer.token);
      
