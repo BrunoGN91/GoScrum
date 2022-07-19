@@ -2,11 +2,13 @@
 import React, {useState, useEffect} from 'react'
 import './TaskForm.styles.css'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import {useFormik, validateYupSchema } from 'formik'
 import * as Yup from 'yup'
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { taskFormProcess } from '../../store/actions/taskFormAction'
 
 const TaskForm = () => {
     const requiredField = "* El campo es olbigatorio"
@@ -19,37 +21,18 @@ const TaskForm = () => {
       description: Yup.string().required(requiredField)
 
     })
-    
-    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
     const initialValues = {
       title: '',
       status: '',
       importance: '',
       description: '',
     }
-  
-      
-  
-  
+
       const onSubmit = (e) => {
-        fetch(`${process.env.REACT_APP_API_ENDPOINT}/task`, {
-         method: "POST",
-         headers: {
-          'Content-Type' : 'application/json',
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-         },
-         body: JSON.stringify({task: {
-          title: values.title,
-          status: values.status,
-          importance: values.importance,
-          description: values.description
-         }})
-       }).then(res => res.json()
-       ).then(data => {
+        dispatch(taskFormProcess(values))
         resetForm()
-        toast("Tu tarea se creo")
-       })
-       
      }
      const formik = useFormik({initialValues, onSubmit, validationSchema });
      const { resetForm, handleSubmit, handleChange, errors, touched, handleBlur, values} = formik
@@ -59,13 +42,15 @@ const TaskForm = () => {
   return (
     <section className ="task_form">
         <h2>Crear tarea</h2>
-        <p>Crea tus tareas</p>
+        
         <form 
         action=""
         onSubmit={handleSubmit}>
             <div>
                 <div>
-                    <input 
+                  <label htmlFor="title">Titulo: </label>
+                    <input
+                    aria-label="title_input"
                     name='title'
                     type="text" 
                     onChange={handleChange}
@@ -77,7 +62,9 @@ const TaskForm = () => {
                 </div>
                 
                 <div>
+                <label htmlFor="status">Estado: </label>
                 <select
+                aria-label='status_select'
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.status}
@@ -92,7 +79,9 @@ const TaskForm = () => {
                 </div>
                 
                 <div>
+                <label htmlFor="importance">Importancia: </label>
                 <select
+                aria-label='importance_select'
                 value={values.importance}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -112,7 +101,7 @@ const TaskForm = () => {
                 value={values.description}
                 onChange={handleChange} 
                 name="description" 
-                id="" 
+                aria-label="description_input" 
                 cols="30" 
                 rows="10"
                 onBlur={handleBlur}
