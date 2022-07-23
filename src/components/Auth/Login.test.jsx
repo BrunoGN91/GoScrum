@@ -19,21 +19,21 @@ jest.mock("./Login")
 
 
 
-const mockSelector = jest.fn()
-const mockLogin = jest.fn()
-const mockedNavigator = jest.fn()
+// const mockSelector = jest.fn()
+// const mockLogin = jest.fn()
+// const mockedNavigator = jest.fn()
 
-jest.mock("react-router-dom", () => ({
-  ...(jest.requireActual("react-router-dom")),
-  useNavigate: () => mockedNavigator,
-}));
+// jest.mock("react-router-dom", () => ({
+//   ...(jest.requireActual("react-router-dom")),
+//   useNavigate: () => mockedNavigator,
+// }));
 
-jest.mock('react-redux', () => ({
-    useSelector: mockSelector.mockImplementation(selector => selector()),
-  }));
-jest.mock('../../store/selectors/selectors.js', () => ({
-    loginSelectors: mockLogin.mockReturnValue("LoginSelector"),
-  }));
+// jest.mock('react-redux', () => ({
+//     useSelector: mockSelector.mockImplementation(selector => selector()),
+//   }));
+// jest.mock('../../store/selectors/selectors.js', () => ({
+//     loginSelectors: mockLogin.mockReturnValue("LoginSelector"),
+//   }));
 const mockStore = createMockStore([]);
 const state = {
     userName: 'NuevoUsuario',
@@ -82,7 +82,7 @@ it("Testing onSubmit", async () => {
     act(() => {
         user.type(userName, "NuevoUsuario")
         user.type(password, "1234")
-        user.click(button)
+        clickSubmitForm()
     })
           
     // await waitFor(() => {
@@ -94,21 +94,30 @@ it("Testing onSubmit", async () => {
      }
 )
 
-// it("testing validations", async () => {
-//     render(
-//         <Provider store={store}>
-//             <Login />
-//         </Provider>, {
-//         wrapper: MemoryRouter
-//       });
-//     clickSubmitForm()
-//     await waitFor(() =>{
-//          expect(screen.getByText("/\* el campo es olbigatorio/i").toBeInTheDocument())
-//      })
-// })
+it("testing validations", () => {
+    
+    clickSubmitForm()
+     waitFor(() =>{
+         expect(screen.getAllByText("/\* el campo es olbigatorio/i")).toBeTruthy()
+     })
+})
+
+it("testing shortened email validations", () => {
+
+    const userName = screen.getByRole('textbox', {
+        name: /username/i
+    })
+    user.type(userName, "nue")
+    waitFor(() =>{
+        expect(screen.getByText("/\* el campo es olbigatorio/i")).toBeTruthy()
+        expect(screen.getByText(/minimo 4 caracteres/i)).toBeTruthy()
+
+    })
+
+})
 
 const clickSubmitForm = () => {
-    return user.click(screen.getByRole("button", {name: "Enviar"}))
+    return user.click(screen.getByRole("button", {name: /enviar/i}))
 }
 
 })

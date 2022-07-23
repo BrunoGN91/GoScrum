@@ -9,7 +9,7 @@ const Header = () => {
 
   const navigate = useNavigate()
 
-  const { tasks} = useSelector(state => {
+  const { tasks } = useSelector(state => {
     return state.tasksReducer
 })
   const handleLogout = () => {

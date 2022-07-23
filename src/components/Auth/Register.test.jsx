@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { Register } from "./Register";
 import { useFormik } from 'formik'
 import { MemoryRouter } from 'react-router-dom'
@@ -27,12 +27,8 @@ beforeAll(() => server.listen())
 afterAll(() => server.close())
 
 describe("Register Component", () => {
-    const onSubmit = jest.fn()
-    const initialValues = jest.fn()
-    const props = {
-        onSubmit,
-        initialValues,
-    }
+  
+
 
     const mockSelector = jest.fn()
     const mockRegister = jest.fn()
@@ -43,38 +39,32 @@ describe("Register Component", () => {
     jest.mock('../../store/selectors/selectors.js', () => ({
         registerSelector: mockRegister.mockReturnValue({
             validate: false,
-    userName: '',
-    error: ''
+            userName: '',
+            error: ''
         }),
       }));
 
       
-const mockedNavigator = jest.fn()
-jest.mock("react-router-dom", () => ({
-  ...(jest.requireActual("react-router-dom")),
-  useNavigate: () => mockedNavigator,
-}));   
+// const mockedNavigator = jest.fn()
+// jest.mock("react-router-dom", () => ({
+//   ...(jest.requireActual("react-router-dom")),
+//   useNavigate: () => mockedNavigator,
+// }));   
 
-const mockStore = createMockStore([])
 
+const initialValues = jest.fn()
 const state = {
     validate: false,
-    userName: 'NuevoUsuario',
-    error: 'Error'
+    userName: "NuevoUsuario",
+    error: ""
 }
-const store = mockStore({
-    registerReducer: {
-        validate: false,
-        userName: 'NuevoUsuario',
-        error: 'Error'
-    }
-});
+const mockedStore = createMockStore({})
 
 beforeEach(() => {
-    onSubmit.mockClear();
+    
     render (
-        <Provider store={store}>
-             <Register {...props}/>
+        <Provider store={mockedStore}>
+             <Register />
         </Provider>
        , {wrapper: MemoryRouter})
 })
@@ -88,14 +78,22 @@ it("fetch options", async () => {
     ).toBeInTheDocument()
 })
 
-// it("testing validations", () => {
+it("testing validations", async () => {
     
-//    const userName = screen.getByRole('textbox', {
-//     name: /nombre de usuario/i
-//   });
+   const validations = screen.getAllByText("/\* el campo es olbigatorio/i")
 
-//   user.type(userName, "Bruno")
+  clickSubmitForm()
+
+    waitFor(() => {
+        expect(
+            validations
+        ).toBeTruthy()
+    })
     
-// })
+})
+
+const clickSubmitForm = () => {
+    return user.click(screen.getByRole("button", { name: /enviar/i}))
+}
 
 })
